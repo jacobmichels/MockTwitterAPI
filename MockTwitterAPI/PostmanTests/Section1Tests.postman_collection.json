@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4a7194b9-bcdb-4664-b177-67aa4d51da3c",
+		"_postman_id": "6318fe37-b71a-4a3d-9cb6-109d98c09514",
 		"name": "Mock Twitter API Section 1 Tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Username\":\"randomUSername53\",\r\n    \"Password\":\"Abc!12\"\r\n}",
+							"raw": "{\r\n    \"Username\":\"NewUser\",\r\n    \"Password\":\"Abc!12\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -45,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Username\":\"randomUSername53\",\r\n    \"Password\":\"Abc!12\"\r\n}",
+							"raw": "{\r\n    \"Username\":\"NewUser\",\r\n    \"Password\":\"Abc!12\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -75,7 +75,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxYTNkNDU4MC01NmRlLTQ2MDctOGUxZi1jY2JhYzQ3YzlmNDMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoicmFuZG9tVVNlcm5hbWU1MyIsImp0aSI6Ijk5MjQ5MTE0LWZjMjEtNDZiYS04Yzg2LWI2MDgyZDExNDhmYSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMWEzZDQ1ODAtNTZkZS00NjA3LThlMWYtY2NiYWM0N2M5ZjQzIiwiZXhwIjoxNjE1ODM5NjYyLCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo1MDAxIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSJ9.wq_4XFmyvDX4kl-8m4xOJac5Z63dBmmrMjhUzRCZEKE",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlNTVlYzVkMy1mZDRjLTQ1ZGYtYWQxYi00MmUzMjVkMDA5NDMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiTmV3VXNlciIsImp0aSI6IjQ3ZDRiMjBkLWVlMjQtNGYxOC04YTk1LTc1ZDJjZWQ5YzM4MiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiZTU1ZWM1ZDMtZmQ0Yy00NWRmLWFkMWItNDJlMzI1ZDAwOTQzIiwiZXhwIjoxNjE1ODQxODE5LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo1MDAxIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSJ9.roBlpNkH1rkqta7K5UjyP1j4inW86bPMJA_pO7HwD9A",
 									"type": "string"
 								}
 							]
@@ -216,7 +216,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Username\":\"Jacob\",\r\n    \"Password\":\"Abc!12\"\r\n}",
+							"raw": "{\r\n    \"Username\":\"NewUser\",\r\n    \"Password\":\"Abc!12\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -482,7 +482,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Username\":\"ThisUserDoesNotExist\",\r\n    \"Password\":\"Abc!12\"\r\n}",
+							"raw": "{\r\n    \"Username\":\"NewUser\",\r\n    \"Password\":\"WrongPassword\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -512,10 +512,29 @@
 				{
 					"name": "Invalid JWT",
 					"request": {
-						"method": "GET",
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "invalid_token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "https://localhost:5001/user/loginstatus",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"user",
+								"loginstatus"
+							]
 						}
 					},
 					"response": []
