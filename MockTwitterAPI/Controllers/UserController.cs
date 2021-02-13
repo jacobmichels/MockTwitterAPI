@@ -42,7 +42,7 @@ namespace MockTwitterAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Register(AccountModel registration)
+        public async Task<IActionResult> Register([FromBody] AccountModel registration)
         {
             if (ModelState.IsValid)
             {
@@ -74,7 +74,7 @@ namespace MockTwitterAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Login(AccountModel loginDetails)
+        public async Task<IActionResult> Login([FromBody] AccountModel loginDetails)
         {
             if (ModelState.IsValid)
             {
