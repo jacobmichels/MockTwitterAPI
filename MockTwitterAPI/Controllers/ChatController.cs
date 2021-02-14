@@ -92,6 +92,10 @@ namespace MockTwitterAPI.Controllers
             {
                 return Problem(detail: "User not found, are you signed in?", statusCode: 422);
             }
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                return Problem(detail: "Message content cannot be empty/whitespace.", statusCode: 400);
+            }
             Guid guid;
             if (!Guid.TryParse(chatid, out guid))
             {
