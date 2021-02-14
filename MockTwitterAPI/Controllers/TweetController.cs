@@ -70,11 +70,13 @@ namespace MockTwitterAPI.Controllers
             {
                 return NotFound("Tweet not found.");
             }
-            if(Tweet.Username != User.Identity.Name)
+            string Username = User.Identity.Name;
+            if(Tweet.Username != Username)
             {
                 return BadRequest("You cannot update someone else's tweet!");
             }
             TweetModel EditedTweet = new TweetModel();
+            EditedTweet.Username = Username;
             EditedTweet.Content = content;
             EditedTweet.Id = id;
             EditedTweet.Timestamp = DateTime.Now;
