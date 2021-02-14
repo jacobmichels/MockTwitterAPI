@@ -27,18 +27,23 @@ namespace MockTwitterAPI.Controllers
             _db = db;
         }
 
-        // GET: Tweet
-        [HttpGet]
+        
+        [HttpGet] // GET /tweet
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetTweet()
         {
+            //return a list of all tweets ordered by datetime tweeted
             var tweets = await _db.Tweets.OrderBy(tweet=>tweet.Timestamp).ToListAsync();
             return Ok(tweets);
         }
 
-        // GET: Tweet/5
-        [HttpGet("{id}")]
+        
+        [HttpGet("{id}")] // GET: /tweet/{id}
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetTweet(Guid id)
         {
+            //get the tweet referenced by the GUID
             var tweetModel = await _db.Tweets.FindAsync(id);
 
             if (tweetModel == null)
@@ -49,9 +54,13 @@ namespace MockTwitterAPI.Controllers
             return Ok(tweetModel);
         }
 
-        // PUT: Tweet/5
+        
         [Authorize]
-        [HttpPut("{id}")]
+        [HttpPut("{id}")] // PUT: /tweet/{id}
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> PutTweet(Guid id, string content)
         {
             if (User == null)
@@ -62,24 +71,26 @@ namespace MockTwitterAPI.Controllers
             {
                 return Problem(detail: "A tweet cannot have no content.", statusCode: 400);
             }
-
+            //find the tweet referenced by the GUID
             var Tweet = _db.Tweets.FirstOrDefault(tweet => tweet.Id == id);
             if (Tweet == null)
             {
                 return Problem(detail:"Tweet not found.",statusCode:404);
             }
             string Username = User.Identity.Name;
+            //make sure the tweet belongs to the user
             if(Tweet.Username != Username)
             {
                 return Problem(detail:"You cannot update someone else's tweet!",statusCode:400);
             }
+            //create a new tweet object, and fill it in.
             TweetModel EditedTweet = new TweetModel();
             EditedTweet.Username = Username;
             EditedTweet.Content = content;
             EditedTweet.Id = id;
-            EditedTweet.Timestamp = DateTime.Now;
-            var oldTweet = _db.Tweets.Find(id);
-            _db.Tweets.Remove(oldTweet);
+            EditedTweet.Timestamp = DateTime.Now;   //update the timestamp to reflect when it was edited.
+            var oldTweet = _db.Tweets.Find(id);     
+            _db.Tweets.Remove(oldTweet);    //remove the old tweet and add the new one.
             _db.Tweets.Add(EditedTweet);
             try
             {
@@ -100,9 +111,12 @@ namespace MockTwitterAPI.Controllers
             return CreatedAtAction("PutTweet",EditedTweet);
         }
 
-        // POST: Tweet
+        
         [Authorize]
-        [HttpPost]
+        [HttpPost] // POST: /tweet
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<ActionResult<TweetModel>> PostTweet(string content)
         {
             if (string.IsNullOrWhiteSpace(content))
@@ -113,12 +127,13 @@ namespace MockTwitterAPI.Controllers
             {
                 return Problem(detail: "User not found, are you signed in?", statusCode: 422);
             }
+            //create a new tweet with the content supplied by the user
             TweetModel tweet = new TweetModel();
             tweet.Content = content;
             tweet.Username = User.Identity.Name;
             tweet.Timestamp = DateTime.Now;
 
-            _db.Tweets.Add(tweet);
+            _db.Tweets.Add(tweet);  //add the tweet to the database
             try
             {
                 await _db.SaveChangesAsync();
@@ -132,9 +147,13 @@ namespace MockTwitterAPI.Controllers
             return CreatedAtAction("PostTweet", new { id = tweet.Id }, tweet);
         }
 
-        // DELETE: Tweet/5
+        
         [Authorize]
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}")] // DELETE: /tweet/{id}
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> DeleteTweet(Guid id)
         {
             if (User == null)
@@ -142,16 +161,18 @@ namespace MockTwitterAPI.Controllers
                 return Problem(detail: "User not found, are you signed in?", statusCode: 422);
             }
             string Username = User.Identity.Name;
+            //find the tweet referenced by the GUID
             var tweet = await _db.Tweets.FindAsync(id);
             if (tweet == null)
             {
                 return Problem(detail: "Tweet not found", statusCode: 404);
             }
+            //make sure the user owns the tweet
             if (tweet.Username != Username)
             {
                 return Problem(detail:"You cannot delete someone else's tweet!",statusCode:400);
             }
-
+            //remove the tweet and update the database
             _db.Tweets.Remove(tweet);
             try
             {

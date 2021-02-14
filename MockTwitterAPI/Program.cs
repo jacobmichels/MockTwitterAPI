@@ -20,6 +20,7 @@ namespace MockTwitterAPI
             
             using (var scope = Host.Services.CreateScope())
             {
+                //perform any pending database migrations at runtime
                 var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 db.Database.Migrate();
             }

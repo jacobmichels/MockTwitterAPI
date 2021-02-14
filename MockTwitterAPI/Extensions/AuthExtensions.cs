@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 
 namespace MockTwitterAPI.Extensions
 {
+    //this class and methods taken from https://medium.com/swlh/securing-your-net-core-3-api-using-identity-93d6426d6311
+    //these methods are extension methods used to conveniently add authentication with jwts
     public static class AuthExtensions
     {
         public static IServiceCollection AddAuth(

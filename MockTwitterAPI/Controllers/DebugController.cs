@@ -21,8 +21,10 @@ namespace MockTwitterAPI.Controllers
             _db = db;
         }
         [HttpDelete("[controller]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> ClearDatabase()
         {
+            //remove all the users, tweets, chats, and messages from the database. This leaves the structure of the database, but just deletes all the entries.
             _db.Users.RemoveRange(_db.Users.AsEnumerable());
             _db.Tweets.RemoveRange(_db.Tweets.AsEnumerable());
             _db.Chats.RemoveRange(_db.Chats.AsEnumerable());

@@ -32,24 +32,28 @@ namespace MockTwitterAPI
         {
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
 
+            //add EF Core with sqlite as underlying database
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
+
+            //add identity
             services.AddDataProtection();
             services.AddIdentityCore<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            //add jwt authentication
             var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
             services.AddAuth(jwtSettings);
-            //services.AddAuthentication().AddCookie("Identity.Application");
 
             services.AddHttpContextAccessor();
             services.TryAddScoped<UserManager<IdentityUser>>();
             services.TryAddScoped<SignInManager<IdentityUser>>();
 
             services.AddControllers();
+            //add swagger generation
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MockTwitterAPI", Version = "v1" });
@@ -93,11 +97,13 @@ namespace MockTwitterAPI
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            //initialize swagger
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MockTwitterAPI v1"));
 
             app.UseRouting();
 
+            //initialize auth
             app.UseAuth();
 
             app.UseEndpoints(endpoints =>

@@ -10,7 +10,6 @@ namespace MockTwitterAPI.Models
     {
         public Guid Id { get; set; }
         public string Username { get; set; }
-        [StringLength(280,ErrorMessage = "A tweet cannot exceed 280 characters!")]
         public string Content { get; set; }
         public DateTime Timestamp { get; set; }
     }
