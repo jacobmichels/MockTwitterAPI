@@ -15,7 +15,7 @@ namespace MockTwitterAPI.Controllers
 {
     [ApiController]
     [Authorize]
-    public class ChatController : Controller
+    public class ChatController : ControllerBase
     {
         private readonly ILogger<ChatController> _logger;
         private readonly ApplicationDbContext _db;
@@ -26,7 +26,7 @@ namespace MockTwitterAPI.Controllers
             _db = db;
         }
 
-        [HttpGet("[controller]/listchats")]
+        [HttpGet("[controller]")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> ListChats()
@@ -47,32 +47,7 @@ namespace MockTwitterAPI.Controllers
             return Ok(sb.ToString());
         }
 
-        [HttpGet("[controller]/{chatid}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> ListChatInfo(string chatid)
-        {
-            if (User == null)
-            {
-                return Problem(detail: "User not found, are you signed in?", statusCode: 422);
-            }
-            string Username = User.Identity.Name;
-            ChatModel chat = await _db.Chats.FirstOrDefaultAsync(chat => chat.Id == Guid.Parse(chatid));
-            if (chat == null)
-            {
-                return Problem(detail: $"Chat with Id {chatid} does not exist",statusCode:422);
-            }
-            if(chat.OriginalReceiver!=Username && chat.OriginalSender != Username)
-            {
-                return Problem(detail:"You do not have access to this chat.",statusCode:403);
-            }
-            return Ok($"Chat Info\nChatID: [{chat.Id}] Chat OriginalSender: [{chat.OriginalSender}] Chat OriginalReceiver: [{chat.OriginalReceiver}] Chat Message Count: [{CountChatMessages(chat)}]");
-        }
-
-
-
-        [HttpPost("[controller]/createchat")]
+        [HttpPost("[controller]")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -114,7 +89,7 @@ namespace MockTwitterAPI.Controllers
             return Ok("Chat created.");
         }
 
-        [HttpPost("[controller]/{chatid}/sendmessage")]
+        [HttpPost("[controller]/{chatid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -155,7 +130,7 @@ namespace MockTwitterAPI.Controllers
             return Ok("Message sent.");
         }
 
-        [HttpGet("[controller]/{chatid}/viewmessages")]
+        [HttpGet("[controller]/{chatid}")]
         public IActionResult ViewMessages(string chatid)
         {
             if (User == null)
