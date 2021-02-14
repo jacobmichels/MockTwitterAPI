@@ -11,6 +11,7 @@ namespace MockTwitterAPI.Data
     {
         public DbSet<MessageModel> Messages { get; set; }
         public DbSet<ChatModel> Chats { get; set; }
+        public DbSet<TweetModel> Tweets { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
