@@ -86,8 +86,6 @@ namespace MockTwitterAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MockTwitterAPI v1"));
             }
             else
             {
@@ -95,7 +93,8 @@ namespace MockTwitterAPI
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MockTwitterAPI v1"));
 
             app.UseRouting();
 
