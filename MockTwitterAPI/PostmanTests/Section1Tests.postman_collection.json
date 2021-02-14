@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "Registration/Login/JWT verification success",
+			"name": "Successful Walkthrough",
 			"item": [
 				{
 					"name": "Register new user",
@@ -57,7 +57,7 @@
 							"script": {
 								"exec": [
 									"pm.test(\"add jwt to environment\",function(){\r",
-									"   pm.environment.set(\"JWT\", pm.response.text())\r",
+									"   pm.environment.set(\"JWT\", pm.response.json().token)\r",
 									"})\r",
 									""
 								],

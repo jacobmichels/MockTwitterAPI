@@ -12,14 +12,54 @@
 					"name": "Successful Walkthrough",
 					"item": [
 						{
-							"name": "Create new chat",
+							"name": "Create Recipient user",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Username\":\"{{NewChatRecipient}}\",\r\n    \"Password\":\"{{Password}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:5001/user/register",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"user",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create new chat with Recipient",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"ChatID\",pm.response.json().chatCreated.id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "bearer",
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiMjYwODk3My0wMjQ3LTQ2MGQtYTFjOC0xZGZkNGY2OWRiZjUiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiU2VuZGVyIiwianRpIjoiZDQzNzM5MDgtM2NhYS00YTQwLWFiN2ItZmE1MzM4MzAzNDY4IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJiMjYwODk3My0wMjQ3LTQ2MGQtYTFjOC0xZGZkNGY2OWRiZjUiLCJleHAiOjE2MTU4Njg3ODMsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjUwMDEiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo1MDAxIn0.XdJFm8PwdBxaYtQkjm7rEf_mQ6a9LAIDyGgxmLipZTE",
+											"value": "{{JWT}}",
 											"type": "string"
 										}
 									]
@@ -27,7 +67,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/chat?Recipient=Receiver",
+									"raw": "https://localhost:5001/chat?Recipient={{NewChatRecipient}}",
 									"protocol": "https",
 									"host": [
 										"localhost"
@@ -39,7 +79,7 @@
 									"query": [
 										{
 											"key": "Recipient",
-											"value": "Receiver"
+											"value": "{{NewChatRecipient}}"
 										}
 									]
 								}
@@ -48,19 +88,672 @@
 						},
 						{
 							"name": "View list of chats",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
-								"url": null
+								"url": {
+									"raw": "https://localhost:5001/chat",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"chat"
+									]
+								}
 							},
 							"response": []
 						},
 						{
 							"name": "Send message to chat",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/chat/{{ChatID}}?Content=Test message!",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"chat",
+										"{{ChatID}}"
+									],
+									"query": [
+										{
+											"key": "Content",
+											"value": "Test message!"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View messages in chat",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/chat/{{ChatID}}",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"chat",
+										"{{ChatID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"ensure success status\",function(){",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"})"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "GET /Chat expected failures",
+					"item": [
+						{
+							"name": "Unauthorized Request",
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": null
+								"url": {
+									"raw": "https://localhost:5001/chat",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"chat"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"ensure unauthorized status\",function(){",
+									"    pm.response.to.have.status(401)",
+									"})"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "POST /Chat expected failures",
+					"item": [
+						{
+							"name": "Recipient does not exist",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"recipient doesn't exist message\",function(){\r",
+											"    pm.expect(pm.response.json().detail).to.eql(\"Recipient does not exist.\")\r",
+											"})\r",
+											"pm.test(\"ensure status 400\",function(){\r",
+											"    pm.response.to.have.status(400)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/chat/?Recipient=AccountThatDoesNotExist",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"chat",
+										""
+									],
+									"query": [
+										{
+											"key": "Recipient",
+											"value": "AccountThatDoesNotExist"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Unauthorized",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"ensure unauthorized status\",function(){\r",
+											"    pm.response.to.have.status(401)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/chat/?Recipient=AccountThatDoesNotExist",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"chat",
+										""
+									],
+									"query": [
+										{
+											"key": "Recipient",
+											"value": "AccountThatDoesNotExist"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Recipient is current user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"recipient doesn't exist message\",function(){\r",
+											"    pm.expect(pm.response.json().detail).to.eql(\"You cannot create a chat with yourself.\")\r",
+											"})\r",
+											"pm.test(\"ensure status 400\",function(){\r",
+											"    pm.response.to.have.status(400)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/chat?Recipient={{Username}}",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"chat"
+									],
+									"query": [
+										{
+											"key": "Recipient",
+											"value": "{{Username}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET /Chat/{ChatID} expected failures",
+					"item": [
+						{
+							"name": "Unauthorized",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"ensure unauthorized status\",function(){\r",
+											"    pm.response.to.have.status(401)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/chat/{{ChatID}}",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"chat",
+										"{{ChatID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Bad GUID format",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"ensure bad request status\",function(){\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"pm.test(\"ensure detail message\",function(){\r",
+											"    pm.expect(pm.response.json().detail).to.eql(\"ChatID has an invalid format.\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/chat/7238",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"chat",
+										"7238"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Chat doesn't exist",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"ensure bad request status\",function(){\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"pm.test(\"ensure detail message\",function(){\r",
+											"    pm.expect(pm.response.json().detail).to.eql(\"Chat does not exist.\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/chat/d694fa98-fecb-1111-ba30-409aa78762f7\n",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"chat",
+										"d694fa98-fecb-1111-ba30-409aa78762f7\n"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "POST /Chat/{ChatID} expected failures",
+					"item": [
+						{
+							"name": "Chat doesn't exist",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"ensure bad request status\",function(){\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"pm.test(\"ensure detail message\",function(){\r",
+											"    pm.expect(pm.response.json().detail).to.eql(\"Chat does not exist.\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/chat/d694fa98-fecb-1111-ba30-409aa78762f7\n?Content=Test content",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"chat",
+										"d694fa98-fecb-1111-ba30-409aa78762f7\n"
+									],
+									"query": [
+										{
+											"key": "Content",
+											"value": "Test content"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid GUID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"ensure bad request status\",function(){\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"pm.test(\"ensure detail message\",function(){\r",
+											"    pm.expect(pm.response.json().detail).to.eql(\"ChatID has an invalid format.\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/chat/d694fa98-fecb-1111-ba30-49aa78762f7\n?Content=Test content",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"chat",
+										"d694fa98-fecb-1111-ba30-49aa78762f7\n"
+									],
+									"query": [
+										{
+											"key": "Content",
+											"value": "Test content"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Unauthorized",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"ensure unauthorized status\",function(){\r",
+											"    pm.response.to.have.status(401)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/chat/d694fa98-fecb-1111-ba30-49aa78762f7\n?Content=Test content",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"chat",
+										"d694fa98-fecb-1111-ba30-49aa78762f7\n"
+									],
+									"query": [
+										{
+											"key": "Content",
+											"value": "Test content"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Empty tweet content",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"ensure bad request status\",function(){\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"pm.test(\"ensure response detail message\",function(){\r",
+											"    pm.expect(pm.response.json().detail).to.eql(\"Message content cannot be empty/whitespace.\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/chat/{{ChatID}}?content",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"chat",
+										"{{ChatID}}"
+									],
+									"query": [
+										{
+											"key": "content",
+											"value": null
+										}
+									]
+								}
 							},
 							"response": []
 						}
@@ -70,7 +763,742 @@
 		},
 		{
 			"name": "Tweet Endpoint Tests",
-			"item": []
+			"item": [
+				{
+					"name": "Successful Walkthrough",
+					"item": [
+						{
+							"name": "Post tweet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"TweetID\",pm.response.json().id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/tweet?Content=First Tweet! Remember to fit it all in 280 characters!",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"tweet"
+									],
+									"query": [
+										{
+											"key": "Content",
+											"value": "First Tweet! Remember to fit it all in 280 characters!"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View tweet",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/tweet/{{TweetID}}",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"tweet",
+										"{{TweetID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update tweet",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/tweet/{{TweetID}}?Content=Updated tweet content! Timestamp is also updated.",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"tweet",
+										"{{TweetID}}"
+									],
+									"query": [
+										{
+											"key": "Content",
+											"value": "Updated tweet content! Timestamp is also updated."
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View updated tweet",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/tweet/{{TweetID}}",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"tweet",
+										"{{TweetID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post another tweet",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/tweet?Content=Another tweet.",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"tweet"
+									],
+									"query": [
+										{
+											"key": "Content",
+											"value": "Another tweet."
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View all tweets",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/tweet",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"tweet"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete tweet",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/tweet/{{TweetID}}",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"tweet",
+										"{{TweetID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"ensure success status\",function(){",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201,204])",
+									"})"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "POST /Tweet expected failures",
+					"item": [
+						{
+							"name": "No content",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"ensure bad request status\",function(){\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"pm.test(\"ensure message detail\",function(){\r",
+											"    pm.expect(pm.response.json().detail).to.eql(\"A tweet cannot have no content\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/tweet?content",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"tweet"
+									],
+									"query": [
+										{
+											"key": "content",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Unauthorized",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"ensure unauthorized status\",function(){\r",
+											"    pm.response.to.have.status(401)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/tweet?content",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"tweet"
+									],
+									"query": [
+										{
+											"key": "content",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET /Tweet/{id} expected failures",
+					"item": [
+						{
+							"name": "Invalid GUID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"ensure bad request status\",function(){\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"pm.test(\"ensure expected error message\",function(){\r",
+											"    pm.expect(pm.response.json().errors.id[0]).to.eql(\"The value '3234' is not valid.\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/tweet/3234",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"tweet",
+										"3234"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Tweet does not exist",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"ensure bad request status\",function(){\r",
+											"    pm.response.to.have.status(404)\r",
+											"})\r",
+											"pm.test(\"ensure expected error message\",function(){\r",
+											"    pm.expect(pm.response.json().title).to.eql(\"Not Found\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/tweet/9225ccc1-5822-47b6-a3b1-5c26ff598ae6",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"tweet",
+										"9225ccc1-5822-47b6-a3b1-5c26ff598ae6"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PUT /Tweet/{id} expected failures",
+					"item": [
+						{
+							"name": "Invalid GUID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"ensure bad request status\",function(){\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"pm.test(\"ensure expected error message\",function(){\r",
+											"    pm.expect(pm.response.json().errors.id[0]).to.eql(\"The value '3234' is not valid.\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/tweet/3234",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"tweet",
+										"3234"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No content",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"ensure bad request status\",function(){\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"pm.test(\"ensure expected error message\",function(){\r",
+											"    pm.expect(pm.response.json().detail).to.eql(\"A tweet cannot have no content.\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/tweet/{{TweetID}}?content",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"tweet",
+										"{{TweetID}}"
+									],
+									"query": [
+										{
+											"key": "content",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Tweet does not exist",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"ensure unauthorized status\",function(){\r",
+											"    pm.response.to.have.status(401)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/tweet/{{TweetID}}?content=new content",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"tweet",
+										"{{TweetID}}"
+									],
+									"query": [
+										{
+											"key": "content",
+											"value": "new content"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Unauthorized",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"ensure 404 status\",function(){\r",
+											"    pm.response.to.have.status(404)\r",
+											"})\r",
+											"pm.test(\"ensure expected error message\",function(){\r",
+											"    pm.expect(pm.response.json().detail).to.eql(\"Tweet not found.\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/tweet/d8ac9350-8087-495c-a6fd-d44ce46a36ef\n?content=new content",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"tweet",
+										"d8ac9350-8087-495c-a6fd-d44ce46a36ef\n"
+									],
+									"query": [
+										{
+											"key": "content",
+											"value": "new content"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "DELETE /Tweet/{id} expected failures",
+					"item": [
+						{
+							"name": "Unauthorized",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"ensure unauthorized status\",function(){\r",
+											"    pm.response.to.have.status(401)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/tweet/{{TweetID}}",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"tweet",
+										"{{TweetID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Tweet does not exist",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"ensure unauthorized status\",function(){\r",
+											"    pm.response.to.have.status(404)\r",
+											"})\r",
+											"pm.test(\"ensure expected detail message\",function(){\r",
+											"    pm.expect(pm.response.json().detail).to.eql(\"Tweet not found\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/tweet/d8ac9350-8087-495c-a6fd-d44ce46a36ef\n",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"tweet",
+										"d8ac9350-8087-495c-a6fd-d44ce46a36ef\n"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid GUID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"ensure bad request status\",function(){\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"pm.test(\"ensure expected detail message\",function(){\r",
+											"    pm.expect(pm.response.json().errors.id[0]).to.eql(\"The value 'd8ac9350-8087-495c-a6fd-d446a36e' is not valid.\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{JWT}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/tweet/d8ac9350-8087-495c-a6fd-d446a36e",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"tweet",
+										"d8ac9350-8087-495c-a6fd-d446a36e"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
 		}
 	]
 }
