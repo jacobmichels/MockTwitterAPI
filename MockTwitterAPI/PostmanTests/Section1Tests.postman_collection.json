@@ -10,12 +10,23 @@
 			"item": [
 				{
 					"name": "Register new user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Username\":\"NewUser\",\r\n    \"Password\":\"Abc!12\"\r\n}",
+							"raw": "{\r\n    \"Username\":\"{{Username}}\",\r\n    \"Password\":\"{{Password}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -40,12 +51,26 @@
 				},
 				{
 					"name": "Get JWT for new user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"add jwt to environment\",function(){\r",
+									"   pm.environment.set(\"JWT\", pm.response.text())\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Username\":\"NewUser\",\r\n    \"Password\":\"Abc!12\"\r\n}",
+							"raw": "{\r\n    \"Username\":\"{{Username}}\",\r\n    \"Password\":\"{{Password}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -75,7 +100,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjMzk3M2M5OS0yOGEwLTQ0ZmEtOTYyMy1iMGU4YWUyZWRkOGUiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiTmV3VXNlciIsImp0aSI6ImM5NGVjNDU4LWI2MmUtNDBiMC05NDE3LWU3NTNkMzM4YTliOSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiYzM5NzNjOTktMjhhMC00NGZhLTk2MjMtYjBlOGFlMmVkZDhlIiwiZXhwIjoxNjE1ODQyMzE4LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo1MDAxIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSJ9.83KvAnSLRUbG-Vwz6VY9RZKzf76_9Az0PKYc223m4OE",
+									"value": "{{JWT}}",
 									"type": "string"
 								}
 							]
@@ -113,7 +138,9 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							""
+							"pm.test('Status code indicates success/created', function(){",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201])",
+							"})"
 						]
 					}
 				}
@@ -208,6 +235,28 @@
 						}
 					},
 					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test('success status code',function(){",
+							"    pm.response.to.have.status(201)",
+							"})"
+						]
+					}
 				}
 			]
 		},
@@ -446,6 +495,28 @@
 					},
 					"response": []
 				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"http response indicates failure\",function(){",
+							"    pm.expect(pm.response.code).to.be.oneOf([400,422])",
+							"})"
+						]
+					}
+				}
 			]
 		},
 		{
@@ -596,6 +667,28 @@
 					},
 					"response": []
 				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"http response indicates failure\",function(){",
+							"    pm.expect(pm.response.code).to.be.oneOf([400,404])",
+							"})"
+						]
+					}
+				}
 			]
 		},
 		{
@@ -630,6 +723,28 @@
 						}
 					},
 					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"http response indicates failure\",function(){",
+							"    pm.response.to.have.status(400)",
+							"})"
+						]
+					}
 				}
 			]
 		}

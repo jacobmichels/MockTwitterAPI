@@ -1,0 +1,76 @@
+{
+	"info": {
+		"_postman_id": "f902f44c-1a13-4950-adce-c101abd1cee5",
+		"name": "Mock Twitter API Section 2 Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Chat Endpoint Tests",
+			"item": [
+				{
+					"name": "Successful Walkthrough",
+					"item": [
+						{
+							"name": "Create new chat",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiMjYwODk3My0wMjQ3LTQ2MGQtYTFjOC0xZGZkNGY2OWRiZjUiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiU2VuZGVyIiwianRpIjoiZDQzNzM5MDgtM2NhYS00YTQwLWFiN2ItZmE1MzM4MzAzNDY4IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJiMjYwODk3My0wMjQ3LTQ2MGQtYTFjOC0xZGZkNGY2OWRiZjUiLCJleHAiOjE2MTU4Njg3ODMsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjUwMDEiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo1MDAxIn0.XdJFm8PwdBxaYtQkjm7rEf_mQ6a9LAIDyGgxmLipZTE",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:5001/chat?Recipient=Receiver",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "5001",
+									"path": [
+										"chat"
+									],
+									"query": [
+										{
+											"key": "Recipient",
+											"value": "Receiver"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View list of chats",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": null
+							},
+							"response": []
+						},
+						{
+							"name": "Send message to chat",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": null
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Tweet Endpoint Tests",
+			"item": []
+		}
+	]
+}
