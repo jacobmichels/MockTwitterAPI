@@ -92,7 +92,12 @@ namespace MockTwitterAPI.Controllers
             {
                 return Problem(detail: "User not found, are you signed in?", statusCode: 422);
             }
-            var chat = _db.Chats.FirstOrDefault(chat => chat.Id == Guid.Parse(chatid));
+            Guid guid;
+            if (!Guid.TryParse(chatid, out guid))
+            {
+                return Problem(detail: "ChatID has an invalid format.", statusCode: 400);
+            }
+            var chat = _db.Chats.FirstOrDefault(chat => chat.Id == guid);
             if (chat==null)
             {
                 return Problem(detail:"Chat does not exist.",statusCode:400);
@@ -107,7 +112,7 @@ namespace MockTwitterAPI.Controllers
             message.Sender = Username;
             message.Receiver = Recipient;
             message.Content = content;
-            message.ChatId = Guid.Parse(chatid);
+            message.ChatId = guid;
             message.Chat = chat;
             message.SentDateTime = DateTime.Now;
             _db.Messages.Add(message);
@@ -130,7 +135,12 @@ namespace MockTwitterAPI.Controllers
             {
                 return Problem(detail: "User not found, are you signed in?", statusCode: 422);
             }
-            var chat = _db.Chats.FirstOrDefault(chat => chat.Id == Guid.Parse(chatid));
+            Guid guid;
+            if(!Guid.TryParse(chatid, out guid))
+            {
+                return Problem(detail: "ChatID has an invalid format.", statusCode: 400);
+            }
+            var chat = _db.Chats.FirstOrDefault(chat => chat.Id == guid);
             if (chat == null)
             {
                 return Problem(detail:"Chat does not exist.",statusCode:400);
@@ -140,7 +150,7 @@ namespace MockTwitterAPI.Controllers
             {
                 return Problem(detail:"You do not have permission to view messages in this chat",statusCode:403);
             }
-            var MessageList = _db.Messages.Where(message=>message.ChatId==Guid.Parse(chatid)).OrderBy(message=>message.SentDateTime).ToList();
+            var MessageList = _db.Messages.Where(message=>message.ChatId==guid).OrderBy(message=>message.SentDateTime).ToList();
             
             return Ok(MessageList);
         }
