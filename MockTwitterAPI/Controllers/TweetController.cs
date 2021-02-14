@@ -58,11 +58,15 @@ namespace MockTwitterAPI.Controllers
             {
                 return Problem(detail: "User not found, are you signed in?", statusCode: 422);
             }
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                return Problem(detail: "A tweet cannot have no content.", statusCode: 400);
+            }
 
             var Tweet = _db.Tweets.FirstOrDefault(tweet => tweet.Id == id);
             if (Tweet == null)
             {
-                return NotFound("Tweet not found.");
+                return Problem(detail:"Tweet not found.",statusCode:404);
             }
             string Username = User.Identity.Name;
             if(Tweet.Username != Username)
@@ -139,13 +143,13 @@ namespace MockTwitterAPI.Controllers
             }
             string Username = User.Identity.Name;
             var tweet = await _db.Tweets.FindAsync(id);
+            if (tweet == null)
+            {
+                return Problem(detail: "Tweet not found", statusCode: 404);
+            }
             if (tweet.Username != Username)
             {
                 return Problem(detail:"You cannot delete someone else's tweet!",statusCode:400);
-            }
-            if (tweet == null)
-            {
-                return NotFound();
             }
 
             _db.Tweets.Remove(tweet);
