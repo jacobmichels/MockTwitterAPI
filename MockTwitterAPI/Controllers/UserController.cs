@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 namespace MockTwitterAPI.Controllers
 {
     [ApiController]
-    public class UserController : Controller
+    public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -109,7 +109,7 @@ namespace MockTwitterAPI.Controllers
             {
                 return Ok($"Token valid. You are logged in as {User.Identity.Name}.");
             }
-            return Ok("Token not recognized. You are not logged in.");
+            return BadRequest("Token not recognized. You are not logged in.");
         }
 
         private string GenerateJwt(IdentityUser user)
