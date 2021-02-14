@@ -12,8 +12,9 @@ namespace MockTwitterAPI.Models
         public ChatModel Chat { get; set; }
         public Guid ChatId { get; set; }
         public string Content { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTime SentDateTime { get; set; }      //generate this when inserted into database
+        public string Sender { get; set; }
+        public string Receiver { get; set; }
+        public DateTime SentDateTime { get; set; }
 
     }
 }

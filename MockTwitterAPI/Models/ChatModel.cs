@@ -10,6 +10,5 @@ namespace MockTwitterAPI.Models
         public Guid Id { get; set; }
         public string OriginalSender { get; set; }
         public string OriginalReceiver { get; set; }
-        public ICollection<MessageModel> Messages { get; set; }
     }
 }
