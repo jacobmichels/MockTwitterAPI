@@ -26,12 +26,11 @@
 									}
 								},
 								"url": {
-									"raw": "https://localhost:5001/user/register",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/user/register",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"user",
 										"register"
@@ -67,12 +66,11 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/chat?Recipient={{NewChatRecipient}}",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/chat?Recipient={{NewChatRecipient}}",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"chat"
 									],
@@ -113,12 +111,11 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/chat",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/chat",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"chat"
 									]
@@ -153,12 +150,11 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/chat/{{ChatID}}?Content=Test message!",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/chat/{{ChatID}}?Content=Test message!",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"chat",
 										"{{ChatID}}"
@@ -189,12 +185,11 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/chat/{{ChatID}}",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/chat/{{ChatID}}",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"chat",
 										"{{ChatID}}"
@@ -236,12 +231,11 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/chat",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/chat",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"chat"
 									]
@@ -308,12 +302,11 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/chat/?Recipient=AccountThatDoesNotExist",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/chat/?Recipient=AccountThatDoesNotExist",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"chat",
 										""
@@ -350,12 +343,11 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/chat/?Recipient=AccountThatDoesNotExist",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/chat/?Recipient=AccountThatDoesNotExist",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"chat",
 										""
@@ -402,12 +394,11 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/chat?Recipient={{Username}}",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/chat?Recipient={{Username}}",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"chat"
 									],
@@ -448,12 +439,11 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/chat/{{ChatID}}",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/chat/{{ChatID}}",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"chat",
 										"{{ChatID}}"
@@ -494,12 +484,11 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/chat/7238",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/chat/7238",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"chat",
 										"7238"
@@ -540,12 +529,11 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/chat/d694fa98-fecb-1111-ba30-409aa78762f7\n",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/chat/d694fa98-fecb-1111-ba30-409aa78762f7\n",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"chat",
 										"d694fa98-fecb-1111-ba30-409aa78762f7\n"
@@ -591,12 +579,11 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/chat/d694fa98-fecb-1111-ba30-409aa78762f7\n?Content=Test content",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/chat/d694fa98-fecb-1111-ba30-409aa78762f7\n?Content=Test content",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"chat",
 										"d694fa98-fecb-1111-ba30-409aa78762f7\n"
@@ -643,12 +630,11 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/chat/d694fa98-fecb-1111-ba30-49aa78762f7\n?Content=Test content",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/chat/d694fa98-fecb-1111-ba30-49aa78762f7\n?Content=Test content",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"chat",
 										"d694fa98-fecb-1111-ba30-49aa78762f7\n"
@@ -685,12 +671,11 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/chat/d694fa98-fecb-1111-ba30-49aa78762f7\n?Content=Test content",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/chat/d694fa98-fecb-1111-ba30-49aa78762f7\n?Content=Test content",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"chat",
 										"d694fa98-fecb-1111-ba30-49aa78762f7\n"
@@ -737,12 +722,11 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/chat/{{ChatID}}?content",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/chat/{{ChatID}}?content",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"chat",
 										"{{ChatID}}"
@@ -794,12 +778,11 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/tweet?Content=First Tweet! Remember to fit it all in 280 characters!",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/tweet?Content=First Tweet! Remember to fit it all in 280 characters!",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"tweet"
 									],
@@ -819,12 +802,11 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/tweet/{{TweetID}}",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/tweet/{{TweetID}}",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"tweet",
 										"{{TweetID}}"
@@ -849,12 +831,11 @@
 								"method": "PUT",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/tweet/{{TweetID}}?Content=Updated tweet content! Timestamp is also updated.",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/tweet/{{TweetID}}?Content=Updated tweet content! Timestamp is also updated.",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"tweet",
 										"{{TweetID}}"
@@ -875,12 +856,11 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/tweet/{{TweetID}}",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/tweet/{{TweetID}}",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"tweet",
 										"{{TweetID}}"
@@ -905,12 +885,11 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/tweet?Content=Another tweet.",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/tweet?Content=Another tweet.",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"tweet"
 									],
@@ -930,12 +909,11 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/tweet",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/tweet",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"tweet"
 									]
@@ -959,12 +937,11 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/tweet/{{TweetID}}",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/tweet/{{TweetID}}",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"tweet",
 										"{{TweetID}}"
@@ -1032,12 +1009,11 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/tweet?content",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/tweet?content",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"tweet"
 									],
@@ -1073,12 +1049,11 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/tweet?content",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/tweet?content",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"tweet"
 									],
@@ -1119,12 +1094,11 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/tweet/3234",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/tweet/3234",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"tweet",
 										"3234"
@@ -1155,12 +1129,11 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/tweet/9225ccc1-5822-47b6-a3b1-5c26ff598ae6",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/tweet/9225ccc1-5822-47b6-a3b1-5c26ff598ae6",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"tweet",
 										"9225ccc1-5822-47b6-a3b1-5c26ff598ae6"
@@ -1206,12 +1179,11 @@
 								"method": "PUT",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/tweet/3234",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/tweet/3234",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"tweet",
 										"3234"
@@ -1252,12 +1224,11 @@
 								"method": "PUT",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/tweet/{{TweetID}}?content",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/tweet/{{TweetID}}?content",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"tweet",
 										"{{TweetID}}"
@@ -1294,12 +1265,11 @@
 								"method": "PUT",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/tweet/{{TweetID}}?content=new content",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/tweet/{{TweetID}}?content=new content",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"tweet",
 										"{{TweetID}}"
@@ -1346,12 +1316,11 @@
 								"method": "PUT",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/tweet/d8ac9350-8087-495c-a6fd-d44ce46a36ef\n?content=new content",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/tweet/d8ac9350-8087-495c-a6fd-d44ce46a36ef\n?content=new content",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"tweet",
 										"d8ac9350-8087-495c-a6fd-d44ce46a36ef\n"
@@ -1390,12 +1359,11 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/tweet/{{TweetID}}",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/tweet/{{TweetID}}",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"tweet",
 										"{{TweetID}}"
@@ -1436,12 +1404,11 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/tweet/d8ac9350-8087-495c-a6fd-d44ce46a36ef\n",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/tweet/d8ac9350-8087-495c-a6fd-d44ce46a36ef\n",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"tweet",
 										"d8ac9350-8087-495c-a6fd-d44ce46a36ef\n"
@@ -1482,12 +1449,11 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "https://localhost:5001/tweet/d8ac9350-8087-495c-a6fd-d446a36e",
-									"protocol": "https",
+									"raw": "{{Address}}:{{Port}}/tweet/d8ac9350-8087-495c-a6fd-d446a36e",
 									"host": [
-										"localhost"
+										"{{Address}}"
 									],
-									"port": "5001",
+									"port": "{{Port}}",
 									"path": [
 										"tweet",
 										"d8ac9350-8087-495c-a6fd-d446a36e"
