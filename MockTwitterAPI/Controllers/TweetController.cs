@@ -32,13 +32,7 @@ namespace MockTwitterAPI.Controllers
         public async Task<IActionResult> GetTweet()
         {
             var tweets = await _db.Tweets.OrderBy(tweet=>tweet.Timestamp).ToListAsync();
-            StringBuilder sb = new StringBuilder();
-            sb.Append($"Tweet count: [{tweets.Count}]");
-            foreach(TweetModel tweet in tweets)
-            {
-                sb.Append($"\nID: [{tweet.Id}] Timestamp: [{tweet.Timestamp}] Tweet Author: [{tweet.Username}] Tweet Content: [{tweet.Content}]");
-            }
-            return Ok(sb.ToString());
+            return Ok(tweets);
         }
 
         // GET: Tweet/5
@@ -52,7 +46,7 @@ namespace MockTwitterAPI.Controllers
                 return NotFound();
             }
 
-            return Ok($"ID: [{tweetModel.Id}] Timestamp: [{tweetModel.Timestamp}] Tweet Author: [{tweetModel.Username}] Tweet Content: [{tweetModel.Content}]");
+            return Ok(tweetModel);
         }
 
         // PUT: Tweet/5
@@ -73,7 +67,7 @@ namespace MockTwitterAPI.Controllers
             string Username = User.Identity.Name;
             if(Tweet.Username != Username)
             {
-                return BadRequest("You cannot update someone else's tweet!");
+                return Problem(detail:"You cannot update someone else's tweet!",statusCode:400);
             }
             TweetModel EditedTweet = new TweetModel();
             EditedTweet.Username = Username;
@@ -99,7 +93,7 @@ namespace MockTwitterAPI.Controllers
                 }
             }
 
-            return Ok("Tweet created.");
+            return CreatedAtAction("PutTweet",EditedTweet);
         }
 
         // POST: Tweet
@@ -109,7 +103,7 @@ namespace MockTwitterAPI.Controllers
         {
             if (string.IsNullOrWhiteSpace(content))
             {
-                return BadRequest("A tweet cannot have no content");
+                return Problem(detail:"A tweet cannot have no content",statusCode:400);
             }
             if (User == null)
             {
@@ -131,7 +125,7 @@ namespace MockTwitterAPI.Controllers
                 return Problem(detail: "An error occured while trying to save changes to database.", statusCode: 500);
             }
 
-            return CreatedAtAction("GetTweet", new { id = tweet.Id }, tweet);
+            return CreatedAtAction("PostTweet", new { id = tweet.Id }, tweet);
         }
 
         // DELETE: Tweet/5
@@ -147,7 +141,7 @@ namespace MockTwitterAPI.Controllers
             var tweet = await _db.Tweets.FindAsync(id);
             if (tweet.Username != Username)
             {
-                return BadRequest("You cannot delete someone else's tweet!");
+                return Problem(detail:"You cannot delete someone else's tweet!",statusCode:400);
             }
             if (tweet == null)
             {

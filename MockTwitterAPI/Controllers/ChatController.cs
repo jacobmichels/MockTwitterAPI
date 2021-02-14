@@ -37,14 +37,7 @@ namespace MockTwitterAPI.Controllers
             }
             string Username = User.Identity.Name;
             var chats = await _db.Chats.Where(chat => chat.OriginalReceiver == Username || chat.OriginalSender == Username).ToListAsync();
-            StringBuilder sb = new StringBuilder();
-            sb.Append($"{chats.Count} chats found.");
-            foreach(ChatModel chat in chats)
-            {
-                int MessageCount = CountChatMessages(chat);
-                sb.Append($"\nChatID: [{chat.Id}] Original Message Sender: [{chat.OriginalSender}] Original Message Receiver: [{chat.OriginalReceiver}] Message Count: [{MessageCount}]");
-            }
-            return Ok(sb.ToString());
+            return Ok(chats);
         }
 
         [HttpPost("[controller]")]
@@ -61,16 +54,16 @@ namespace MockTwitterAPI.Controllers
             var RecipientUser = await _db.Users.FirstOrDefaultAsync(user => user.UserName == Recipient);
             if (RecipientUser == null)
             {
-                return BadRequest("Recipient does not exist.");
+                return Problem(detail:"Recipient does not exist.",statusCode:400);
             }
             if (Recipient == Username)
             {
-                return BadRequest("You cannot create a chat with yourself.");
+                return Problem(detail:"You cannot create a chat with yourself.",statusCode:400);
             }
             var ExistingChat = await _db.Chats.FirstOrDefaultAsync(chat => (chat.OriginalReceiver==Recipient && chat.OriginalSender==Username) || (chat.OriginalReceiver==Username && chat.OriginalSender==Recipient));
             if (ExistingChat != null)
             {
-                return BadRequest("A chat already exists between you and the recipient.");
+                return Problem(detail:"A chat already exists between you and the recipient.",statusCode:400);
             }
             ChatModel chat = new ChatModel();
             chat.OriginalReceiver = Recipient;
@@ -86,7 +79,7 @@ namespace MockTwitterAPI.Controllers
                 _logger.LogError($"An error occured while trying to save changes to database. Message: {e.Message}");
                 return Problem(detail: "An error occured while trying to save changes to database.",statusCode:500);
             }
-            return Ok("Chat created.");
+            return Ok(new { message="Chat created." });
         }
 
         [HttpPost("[controller]/{chatid}")]
@@ -102,12 +95,12 @@ namespace MockTwitterAPI.Controllers
             var chat = _db.Chats.FirstOrDefault(chat => chat.Id == Guid.Parse(chatid));
             if (chat==null)
             {
-                return BadRequest("Chat does not exist.");
+                return Problem(detail:"Chat does not exist.",statusCode:400);
             }
             string Username = User.Identity.Name;
             if(Username!=chat.OriginalReceiver && Username != chat.OriginalSender)
             {
-                return BadRequest("You do not have access to send messages in this chat.");
+                return Problem(detail:"You do not have access to send messages in this chat.",statusCode:400);
             }
             string Recipient = Username == chat.OriginalReceiver ? chat.OriginalSender : chat.OriginalReceiver;
             MessageModel message = new MessageModel();
@@ -127,7 +120,7 @@ namespace MockTwitterAPI.Controllers
                 _logger.LogError($"An error occured while trying to save changes to database. Message: {e.Message}");
                 return Problem(detail: "An error occured while trying to save changes to database.", statusCode: 500);
             }
-            return Ok("Message sent.");
+            return Ok(new { Message="Message sent", MessageModel=message });
         }
 
         [HttpGet("[controller]/{chatid}")]
@@ -140,7 +133,7 @@ namespace MockTwitterAPI.Controllers
             var chat = _db.Chats.FirstOrDefault(chat => chat.Id == Guid.Parse(chatid));
             if (chat == null)
             {
-                return BadRequest("Chat does not exist.");
+                return Problem(detail:"Chat does not exist.",statusCode:400);
             }
             string Username = User.Identity.Name;
             if(Username!=chat.OriginalReceiver && Username != chat.OriginalSender)
@@ -148,19 +141,8 @@ namespace MockTwitterAPI.Controllers
                 return Problem(detail:"You do not have permission to view messages in this chat",statusCode:403);
             }
             var MessageList = _db.Messages.Where(message=>message.ChatId==Guid.Parse(chatid)).OrderBy(message=>message.SentDateTime).ToList();
-            StringBuilder sb = new StringBuilder();
-            sb.Append($"Message count: {MessageList.Count}");
-            foreach(MessageModel message in MessageList)
-            {
-                sb.Append($"\nID: [{message.Id}] Datetime: [{message.SentDateTime}] Sent by: [{message.Sender}] Sent to: [{message.Receiver}] Message Content: [{message.Content}]");
-            }
-            return Ok(sb.ToString());
+            
+            return Ok(MessageList);
         }
-
-        private int CountChatMessages(ChatModel chat)
-        {
-            return _db.Messages.Count(message=>message.ChatId==chat.Id);
-        }
-
     }
 }

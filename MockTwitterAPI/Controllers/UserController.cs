@@ -53,8 +53,7 @@ namespace MockTwitterAPI.Controllers
                 if (AccountCreationResult.Succeeded)
                 {
                     _logger.LogInformation($"Account created successfully");
-                    //await _signInManager.SignInAsync(NewUser,false);
-                    return StatusCode(201, "Account created. Use the login endpoint to login.");     //Created
+                    return CreatedAtAction("Register", new { Message = "Account created. Use the login endpoint to login." });     //Created
                 }
                 StringBuilder Errors = new StringBuilder();
                 Errors.Append("ErrorList:\n");
@@ -63,10 +62,10 @@ namespace MockTwitterAPI.Controllers
                     Errors.Append($"{error.Description}\n");
                     _logger.LogError($"Error occured during account creation for username: {registration.Username}: {error.Description}");
                 }
-                return StatusCode(422,Errors.ToString());     //Unprocessable entity
+                return Problem(detail:Errors.ToString(),statusCode:422);     //Unprocessable entity
             }
             //bad request. This occurs if the model fails validation
-            return BadRequest("Model failed to validate. This is due to incorrect parameters. Parameters are expected to be in JSON format and located in the request body");
+            return Problem(detail:"Model failed to validate. This is due to incorrect parameters. Parameters are expected to be in JSON format and located in the request body", statusCode:400);
         }
         
         [HttpPost("[controller]/login")]
@@ -89,11 +88,11 @@ namespace MockTwitterAPI.Controllers
                 if (SignInResult)
                 {
 
-                    return Ok(GenerateJwt(UserToLogin));
+                    return Ok(new { token=GenerateJwt(UserToLogin) });
                 }
-                return BadRequest("Incorrect password.");
+                return Problem(detail:"Incorrect password.",statusCode:400);
             }
-            return BadRequest("Model failed to validate. This is due to incorrect parameters. Parameters are expected to be in JSON format and located in the request body");
+            return Problem(detail:"Model failed to validate. This is due to incorrect parameters. Parameters are expected to be in JSON format and located in the request body",statusCode:400);
         }
 
         [HttpPost("[controller]/loginstatus")]
@@ -103,13 +102,13 @@ namespace MockTwitterAPI.Controllers
         {
             if (User == null)
             {
-                return UnprocessableEntity("No data for this user. Please register an account.");
+                return Problem(detail:"No data for this user. Please register an account.",statusCode:422);
             }
             if (User.Identity.IsAuthenticated)
             {
-                return Ok($"Token valid. You are logged in as {User.Identity.Name}.");
+                return Ok(new { message = $"Token valid. You are logged in as {User.Identity.Name}." });
             }
-            return BadRequest("Token not recognized. You are not logged in.");
+            return Problem(detail:"Token not recognized. You are not logged in.",statusCode:400);
         }
 
         private string GenerateJwt(IdentityUser user)
