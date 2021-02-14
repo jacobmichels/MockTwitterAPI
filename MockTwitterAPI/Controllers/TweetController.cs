@@ -71,6 +71,10 @@ namespace MockTwitterAPI.Controllers
             {
                 return Problem(detail: "A tweet cannot have no content.", statusCode: 400);
             }
+            if (content.Length > 280)
+            {
+                return Problem(detail: "A tweet cannot have more than 280 characters!.", statusCode: 400);
+            }
             //find the tweet referenced by the GUID
             var Tweet = _db.Tweets.FirstOrDefault(tweet => tweet.Id == id);
             if (Tweet == null)
@@ -122,6 +126,10 @@ namespace MockTwitterAPI.Controllers
             if (string.IsNullOrWhiteSpace(content))
             {
                 return Problem(detail:"A tweet cannot have no content",statusCode:400);
+            }
+            if (content.Length > 280)
+            {
+                return Problem(detail: "A tweet cannot have more than 280 characters!.", statusCode: 400);
             }
             if (User == null)
             {
