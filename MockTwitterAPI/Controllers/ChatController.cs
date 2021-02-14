@@ -79,7 +79,7 @@ namespace MockTwitterAPI.Controllers
                 _logger.LogError($"An error occured while trying to save changes to database. Message: {e.Message}");
                 return Problem(detail: "An error occured while trying to save changes to database.",statusCode:500);
             }
-            return Ok(new { message="Chat created." });
+            return Ok(new { message="Chat created.", chatCreated=chat });
         }
 
         [HttpPost("[controller]/{chatid}")]
